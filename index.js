@@ -10,16 +10,18 @@ module.exports.pitch = function (request) {
     var query = loaderUtils.parseQuery(this.query) || {};
 
     var callback = this.async();
-    this.cacheable();
 
-    var compiler = this._compilation.createChildCompiler("compile-loader", query);
+    var compiler = this._compilation.createChildCompiler("compile-loader", query.compilerOptions);
     compiler.apply(new SingleEntryPlugin(this.context, "!!" + request, "main"));
 
     compiler.runAsChild(function (err, entries, compilation) {
         if(err) return callback(err);
         if (entries[0]) {
-            var compiledFile = entries[0].files[0];
-            return callback(null, "module.exports = " + JSON.stringify(compilation.assets[compiledFile].source()));
+            var compiledCode = compilation.assets[entries[0].files[0]].source()
+            if (query.asString) {
+                return callback(null, "module.exports = " + JSON.stringify(compiledCode));
+            }
+            return callback(null, compiledCode);
         } else {
             return callback(null, null);
         }
