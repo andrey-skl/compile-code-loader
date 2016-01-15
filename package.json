@@ -1,0 +1,10 @@
+{
+  "name": "compile-loader",
+  "version": "0.0.1",
+  "author": {
+    "name": "Andrey Skladchikov @huston007"
+  },
+  "description": "Compiles javascript with webpack and loads result as string",
+  "dependencies": {},
+  "license": "MIT"
+}
