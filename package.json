@@ -5,6 +5,8 @@
     "name": "Andrey Skladchikov @huston007"
   },
   "description": "Compiles javascript with webpack and loads result as string",
-  "dependencies": {},
+  "dependencies": {
+    "loader-utils": "0.2.x"
+  },
   "license": "MIT"
 }
