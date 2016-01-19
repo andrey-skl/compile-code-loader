@@ -14,6 +14,15 @@ module.exports.pitch = function (request) {
     var compiler = this._compilation.createChildCompiler("compile-loader", query.compilerOptions);
     compiler.apply(new SingleEntryPlugin(this.context, "!!" + request, "main"));
 
+    var subCache = "subcache " + __dirname + " " + request;
+    compiler.plugin("compilation", function(compilation) {
+        if(compilation.cache) {
+            if(!compilation.cache[subCache])
+                compilation.cache[subCache] = {};
+            compilation.cache = compilation.cache[subCache];
+        }
+    });
+
     compiler.runAsChild(function (err, entries, compilation) {
         if(err) return callback(err);
         if (entries[0]) {
