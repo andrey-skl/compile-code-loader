@@ -2,7 +2,7 @@ const path = require("path");
 const SingleEntryPlugin = require("webpack/lib/SingleEntryPlugin");
 const loaderUtils = require("loader-utils");
 
-const FILE_NAME = 'compile-loader-file-name';
+const FILE_NAME = 'compile-loader-file-name.js';
 module.exports = function () {};
 
 
@@ -28,7 +28,7 @@ module.exports.pitch = function (request) {
 
     //Remove compiled file from assets to avoid emiting file
     compiler.plugin("after-compile", function(compilation, callback) {
-        compiledCode = compilation.assets[`${FILE_NAME}.js`];
+        compiledCode = compilation.assets[FILE_NAME].source();
         compilation.assets = {};
         callback();
     });
