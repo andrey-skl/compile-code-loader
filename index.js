@@ -7,12 +7,12 @@ module.exports = function () {};
 module.exports.pitch = function (request) {
     if (!this.webpack) throw new Error("Only usable with webpack");
 
-    var query = loaderUtils.parseQuery(this.query) || {};
+    var options = loaderUtils.getOptions(this);
 
     var callback = this.async();
 
-    var compiler = this._compilation.createChildCompiler("compile-loader", query.compilerOptions);
-    compiler.apply(new SingleEntryPlugin(this.context, "!!" + request, "main"));
+    var compiler = this._compilation.createChildCompiler("compile-loader", options.compilerOptions);
+    compiler.apply(new SingleEntryPlugin2(this.context, "!!" + request, "main"));
 
     var subCache = "subcache " + __dirname + " " + request;
     compiler.plugin("compilation", function(compilation) {
@@ -27,7 +27,7 @@ module.exports.pitch = function (request) {
         if(err) return callback(err);
         if (entries[0]) {
             var compiledCode = compilation.assets[entries[0].files[0]].source()
-            if (query.asString) {
+            if (options.asString) {
                 return callback(null, "module.exports = " + JSON.stringify(compiledCode));
             }
             return callback(null, compiledCode);
