@@ -6,7 +6,7 @@
   },
   "description": "Compiles javascript with webpack and loads result as string",
   "dependencies": {
-    "loader-utils": "0.2.x"
+    "loader-utils": "1.1.x"
   },
   "license": "MIT"
 }

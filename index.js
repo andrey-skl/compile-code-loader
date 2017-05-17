@@ -1,20 +1,23 @@
-var path = require("path");
-var SingleEntryPlugin = require("webpack/lib/SingleEntryPlugin");
-var loaderUtils = require("loader-utils");
+const path = require("path");
+const SingleEntryPlugin = require("webpack/lib/SingleEntryPlugin");
+const loaderUtils = require("loader-utils");
 
+const FILE_NAME = 'compile-loader-file-name';
 module.exports = function () {};
+
 
 module.exports.pitch = function (request) {
     if (!this.webpack) throw new Error("Only usable with webpack");
 
-    var options = loaderUtils.getOptions(this);
+    let compiledCode = null;
+    const options = loaderUtils.getOptions(this);
 
-    var callback = this.async();
+    const callback = this.async();
 
-    var compiler = this._compilation.createChildCompiler("compile-loader", options.compilerOptions);
-    compiler.apply(new SingleEntryPlugin2(this.context, "!!" + request, "main"));
+    const compiler = this._compilation.createChildCompiler("compile-loader", options.compilerOptions);
+    compiler.apply(new SingleEntryPlugin(this.context, "!!" + request, FILE_NAME));
 
-    var subCache = "subcache " + __dirname + " " + request;
+    const subCache = "subcache " + __dirname + " " + request;
     compiler.plugin("compilation", function(compilation) {
         if(compilation.cache) {
             if(!compilation.cache[subCache])
@@ -23,10 +26,16 @@ module.exports.pitch = function (request) {
         }
     });
 
+    //Remove compiled file from assets to avoid emiting file
+    compiler.plugin("after-compile", function(compilation, callback) {
+        compiledCode = compilation.assets[`${FILE_NAME}.js`];
+        compilation.assets = {};
+        callback();
+    });
+
     compiler.runAsChild(function (err, entries, compilation) {
         if(err) return callback(err);
-        if (entries[0]) {
-            var compiledCode = compilation.assets[entries[0].files[0]].source()
+        if (compiledCode) {
             if (options.asString) {
                 return callback(null, "module.exports = " + JSON.stringify(compiledCode));
             }
