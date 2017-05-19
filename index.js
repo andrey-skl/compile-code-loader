@@ -8,7 +8,7 @@ module.exports.pitch = function (request) {
     if (!this.webpack) throw new Error("Only usable with webpack");
 
     let compiledCode = null;
-    const options = loaderUtils.getOptions(this);
+    const options = loaderUtils.getOptions(this) || {};
 
     const callback = this.async();
 
