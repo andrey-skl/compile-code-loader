@@ -2,9 +2,7 @@ const path = require("path");
 const SingleEntryPlugin = require("webpack/lib/SingleEntryPlugin");
 const loaderUtils = require("loader-utils");
 
-const FILE_NAME = 'compile-loader-file-name';
 module.exports = function () {};
-
 
 module.exports.pitch = function (request) {
     if (!this.webpack) throw new Error("Only usable with webpack");
@@ -15,7 +13,7 @@ module.exports.pitch = function (request) {
     const callback = this.async();
 
     const compiler = this._compilation.createChildCompiler("compile-loader", options.compilerOptions);
-    compiler.apply(new SingleEntryPlugin(this.context, "!!" + request, FILE_NAME));
+    compiler.apply(new SingleEntryPlugin(this.context, "!!" + request, 'compile-loader-file-name'));
 
     const subCache = "subcache " + __dirname + " " + request;
     compiler.plugin("compilation", function(compilation) {
@@ -28,7 +26,7 @@ module.exports.pitch = function (request) {
 
     //Remove compiled file from assets to avoid emiting file
     compiler.plugin("after-compile", function(compilation, callback) {
-        compiledCode = (compilation.assets[FILE_NAME] || compilation.assets[`${FILE_NAME}.js`]).source();
+        compiledCode = Object.values(compilation.assets)[0].source();
         compilation.assets = {};
         callback();
     });
