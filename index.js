@@ -4,6 +4,8 @@ const loaderUtils = require("loader-utils");
 
 module.exports = function () {};
 
+const PLUGIN = 'compile-code-loader';
+
 module.exports.pitch = function (request) {
     if (!this.webpack) throw new Error("Only usable with webpack");
 
@@ -12,11 +14,13 @@ module.exports.pitch = function (request) {
 
     const callback = this.async();
 
-    const compiler = this._compilation.createChildCompiler("compile-loader", options.compilerOptions);
-    compiler.apply(new SingleEntryPlugin(this.context, "!!" + request, 'compile-loader-file-name'));
+    const compiler = this._compilation.createChildCompiler(PLUGIN, options.compilerOptions);
+    
+    new SingleEntryPlugin(this.context, "!!" + request, 'compile-loader-file-name').apply(compiler);
 
     const subCache = "subcache " + __dirname + " " + request;
-    compiler.plugin("compilation", function(compilation) {
+    
+    compiler.hooks.compilation.tap(PLUGIN, function(compilation) {
         if(compilation.cache) {
             if(!compilation.cache[subCache])
                 compilation.cache[subCache] = {};
@@ -25,7 +29,7 @@ module.exports.pitch = function (request) {
     });
 
     //Remove compiled file from assets to avoid emiting file
-    compiler.plugin("after-compile", function(compilation, callback) {
+    compiler.hooks.afterCompile.tapAsync(PLUGIN, function(compilation, callback) {
         compiledCode = Object.values(compilation.assets)[0].source();
         compilation.assets = {};
         callback();
