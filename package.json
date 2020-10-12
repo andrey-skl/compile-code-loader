@@ -5,16 +5,12 @@
     "name": "Andrey Skladchikov @huston007"
   },
   "description": "Compiles javascript with webpack and loads result as string",
-  "scripts": {
-    "build-examples": "webpack --config examples/webpack.config.js",
-    "debug-examples": "node --inspect-brk ./node_modules/.bin/webpack --config examples/webpack.config.js"
-  },
   "dependencies": {
     "loader-utils": "^2.0.0"
   },
-  "license": "MIT",
-  "devDependencies": {
-    "webpack": "^4.44.2",
-    "webpack-cli": "^4.0.0"
-  }
+  "files": [
+    "index.js",
+    "README.md"
+  ],
+  "license": "MIT"
 }

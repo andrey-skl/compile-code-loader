@@ -1,4 +1,4 @@
-const compiled = require('./code-to-compile.js');
+const compiled = require('compile-code-loader!./code-to-compile');
 
 console.log('entry');
 

@@ -1,0 +1,18 @@
+{
+  "name": "examples",
+  "private": true,
+  "version": "1.0.0",
+  "description": "",
+  "main": "entry.js",
+  "scripts": {
+    "build-examples": "webpack",
+    "debug-examples": "node --inspect-brk ./node_modules/.bin/webpacks"
+  },
+  "author": "Andrey Skladchikov",
+  "license": "MIT",
+  "devDependencies": {
+    "compile-code-loader": "file:../",
+    "webpack": "^4.44.2",
+    "webpack-cli": "^4.0.0"
+  }
+}

@@ -13,3 +13,9 @@ Also it is possible to get result as javascript and apply transformation, uglify
 ```js
 var compiledSourceString = require('raw!uglify!compile-code!./fileToLoad');
 ```
+
+### Contributing
+
+1. `npm install`
+2. `cd examples && npm install`
+3. `npm run build-examples`

@@ -7,13 +7,5 @@ module.exports = {
   output: {
     path: path.resolve(__dirname, 'dist'),
     filename: 'dist.js'
-  },
-  module: {
-    rules: [
-      {
-        test: /code-to-compile.js$/,
-        loader: require.resolve('../index.js')
-      }
-    ]
   }
 };
