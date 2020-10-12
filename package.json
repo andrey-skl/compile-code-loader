@@ -1,12 +1,20 @@
 {
   "name": "compile-code-loader",
-  "version": "0.1.8",
+  "version": "1.0.0",
   "author": {
     "name": "Andrey Skladchikov @huston007"
   },
   "description": "Compiles javascript with webpack and loads result as string",
-  "dependencies": {
-    "loader-utils": "1.1.x"
+  "scripts": {
+    "build-examples": "webpack --config examples/webpack.config.js",
+    "debug-examples": "node --inspect-brk ./node_modules/.bin/webpack --config examples/webpack.config.js"
   },
-  "license": "MIT"
+  "dependencies": {
+    "loader-utils": "^2.0.0"
+  },
+  "license": "MIT",
+  "devDependencies": {
+    "webpack": "^4.44.2",
+    "webpack-cli": "^4.0.0"
+  }
 }
