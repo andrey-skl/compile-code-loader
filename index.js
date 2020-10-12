@@ -38,10 +38,10 @@ module.exports.pitch = function (request) {
     compiler.runAsChild(function (err, entries, compilation) {
         if(err) return callback(err);
         if (compiledCode) {
-            if (options.asString) {
-                return callback(null, "module.exports = " + JSON.stringify(compiledCode));
+            if (options.rawCompiledCode) {
+                return callback(null, compiledCode);
             }
-            return callback(null, compiledCode);
+            return callback(null, "module.exports = " + JSON.stringify(compiledCode));
         } else {
             return callback(null, null);
         }
